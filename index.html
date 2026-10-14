@@ -16,4 +16,30 @@
 <section class="section" id="demo"><div class="wrap split"><div><h2>Essayez Arriv'Zen</h2><p class="lead">Ouvrez la démonstration depuis votre ordinateur ou votre téléphone. Le lien ouvre la nouvelle page d’accueil V2.2. Sélectionnez votre profil pour découvrir l’espace correspondant.</p><div class="buttons"><a class="button" style="background:#153f72;color:white" href="https://script.google.com/macros/s/AKfycbyvc0NNdowATy15-aWKczO0V2saRSb9tyh6jv5ww8r6RpNMO6RKYmNEgLg0UahxyZlOKg/exec" target="_blank" rel="noopener noreferrer">Accéder à la démonstration ↗</a></div><p class="note"><strong>Important :</strong> prototype de démonstration indépendant de CampManager. Il n’est pas connecté à eSeason et ne doit pas être utilisé pour enregistrer des données personnelles réelles sans mise en conformité et sécurisation préalables.</p></div><div class="panel"><h3>Guide du test V2.2</h3><ul class="checks"><li><strong>1. Client :</strong> choisir « Vous êtes client », puis « Créer son compte ».</li><li><strong>2. Lien :</strong> copier ou ouvrir le lien client créé pour compléter et signer le check-in.</li><li><strong>3. Camping :</strong> revenir à l’accueil, choisir « Vous êtes le camping » et saisir le code de démonstration communiqué séparément.</li><li><strong>4. Réception :</strong> consulter le suivi et confirmer une arrivée après validation du formulaire.</li></ul><p class="note">Les emails automatiques J-3 et J-1 sont prévus dans le prototype. Leur envoi dépend de la configuration et du déclencheur Apps Script.</p></div></div></section>
 <section class="section" id="confidentialite" style="background:#edf3f9"><div class="wrap"><h2>Protection des données : une démarche progressive</h2><p class="lead">Le prototype prévoit une utilisation exclusivement avec des données fictives et présente une notice de confidentialité. Des vérifications de sécurité et de conformité restent nécessaires avant toute utilisation réelle.</p><div class="cards"><article class="card"><h3>Démo sans données réelles</h3><p>Utilisez uniquement des noms, coordonnées et séjours inventés. Ne renseignez aucun vrai dossier client.</p></article><article class="card"><h3>Transparence</h3><p>La notice V2.3 décrit les informations manipulées, Google Sheets, Drive, Apps Script, les signatures et les QR codes externes.</p></article><article class="card"><h3>Avant un pilote terrain</h3><p>Il restera à auditer la sécurité, les accès, les durées de conservation, la suppression, les prestataires et les obligations RGPD.</p></article></div><p class="note"><strong>Statut :</strong> prototype indépendant, non officiellement affilié à Capfun. La notice de confidentialité n’est pas une certification de conformité RGPD.</p></div></section><section class="cta"><div class="wrap"><h2>Un prototype à tester, évaluer et faire évoluer</h2><p>Le parcours est conçu pour recueillir des retours concrets des équipes d'accueil.</p><a class="button" href="https://script.google.com/macros/s/AKfycbyvc0NNdowATy15-aWKczO0V2saRSb9tyh6jv5ww8r6RpNMO6RKYmNEgLg0UahxyZlOKg/exec" target="_blank" rel="noopener noreferrer">Lancer le test ↗</a></div></section>
 <section class="section" id="origine"><div class="wrap"><h2>À l’origine du projet</h2><p class="lead">Arriv'Zen est un projet indépendant né d’une réflexion menée lors de mon expérience professionnelle au sein d’un camping du groupe Capfun. Il a été développé à titre personnel et ne constitue pas un outil officiel du groupe.</p><p class="note"><strong>À noter :</strong> la démonstration de l’application conserve temporairement son ancien nom « Capfun Check In ». Son renommage technique est prévu séparément ; le lien de test reste inchangé pour le moment.</p></div></section></main><footer class="footer"><div class="wrap"><span>Arriv'Zen · Prototype de démonstration</span><span>Projet indépendant · Non affilié officiellement à Capfun</span></div></footer>
+<p style="text-align:center;font-size:12px;opacity:.72;padding:10px 16px">Cette page mesure sans cookies les ouvertures et les clics vers la démonstration, sans enregistrer de données personnelles.</p>
+
+<script>
+/* Statistiques sans cookies : visites de la présentation et clics vers la démonstration uniquement. */
+(function(){
+  const endpoint="https://ebktlmglucuqyqywrtph.supabase.co/functions/v1/product-trial-analytics";
+  const params=new URLSearchParams(location.search);
+  const raw=(params.get("camping")||"unknown").toLowerCase();
+  const campaign=/^[a-z0-9-]{1,40}$/.test(raw)?raw:"unknown";
+  function record(event_type){
+    try {
+      const payload=JSON.stringify({product:"arrivzen",event_type,campaign});
+      if(navigator.sendBeacon){
+        const accepted=navigator.sendBeacon(endpoint,new Blob([payload],{type:"text/plain"}));
+        if(accepted)return;
+      }
+      fetch(endpoint,{method:"POST",headers:{"Content-Type":"text/plain"},body:payload,keepalive:true,mode:"cors"}).catch(function(){});
+    }catch(_){}
+  }
+  record("page_view");
+  document.querySelectorAll("a[href*='script.google.com/macros/']").forEach(function(link){
+    link.addEventListener("click",function(){record("demo_click")});
+  });
+})();
+</script>
+
 </body></html>
